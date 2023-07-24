@@ -15,5 +15,7 @@ void display_prompt();
 char *read_command_line();
 void tokenize_command(char *command, char *args[]);
 void execute_command(char *command);
+char *find_executable_path(const char *command);
+void free_args(char *args[]);
 
 #endif /* SHELL_H */
