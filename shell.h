@@ -16,6 +16,6 @@ char *read_command();
 void parse_command(char *user_input, char *command, char *args[]);
 void execute_command(const char *command, char *const args[]);
 char *find_executable_path(const char *command);
-void free_args(char *args[]);
-
+void free_args(char *const args[]);
+void print_environment(void);
 #endif /* SHELL_H */
