@@ -29,7 +29,12 @@ int main(void)
 			free(user_input);
 			break;
 		}
-		if (strchr(command, '/') != NULL)
+		else if (strcmp(command, "env") == 0)
+		{
+			print_environment();
+
+		}
+		else if (strchr(command, '/') != NULL)
 
 		{
 			executable_path = strdup(command);
