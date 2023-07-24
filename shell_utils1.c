@@ -31,14 +31,14 @@ char *read_command()
 
 	display_prompt();
 
-	chracters_read = getline(&command_input, &bufsize, stdin);
+	characters_read = getline(&command_input, &bufsize, stdin);
 
 	if (characters_read == -1)
 	{
 		free(command_input);
 		return (NULL);
 	}
-	command_input[strcspn(command_input, "\n")] = "\0";
+	command_input[strcspn(command_input, "\n")] = '\0';
 
 	return (command_input);
 }
@@ -54,9 +54,9 @@ char *read_command()
   */
 void parse_command(char *user_input, char *command, char *args[])
 {
-	char *temp_input = strdup(user_inpu);
+	char *temp_input = strdup(user_input);
 	char *token;
-	int i;
+	int i = 0;
 
 	token = strtok(temp_input, " \n");
 	if (token == NULL)
