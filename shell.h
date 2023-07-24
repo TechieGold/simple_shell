@@ -13,8 +13,8 @@
 int _putchar(char c);
 void display_prompt();
 char *read_command_line();
-void tokenize_command(char *command, char *args[]);
-void execute_command(char *command);
+void parse_command(char *user_input, char *command, char *args[]);
+void execute_command(const char *command, char *const args[]);
 char *find_executable_path(const char *command);
 void free_args(char *args[]);
 
