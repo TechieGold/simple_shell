@@ -7,22 +7,49 @@
   */
 int main(void)
 {
-	char *command;
+	char *user_input;
+	char command[MAX_CMD_LENGTH];
+	char *args[MAX_ARGS];
+	char *executable_path;
 
 	while (1)
 	{
-		display_prompt();
-		command = read_command_line();
-		if (command == NULL)
+		user_input = read_command();
+
+		if (user_input == NULL)
 		{
-			putchar('\n');
+			_putchar('\n');
 			break;
 		}
-		if (strlen(command) > 0)
+
+		parse_command(user_input, command, args);
+
+		if (strcmp(command, "exit") == 0)
 		{
-			execute_command(command);
+			free(user_input);
+			break;
 		}
-		free(command);
+		
+		if (strstr(command, '/') != NULL)
+		{
+			executable_path = strdup(command);
+
+			if (executable_path == NULL)
+			{
+
+				printf("command not found: %s/n", command);
+				free(user_input);
+				free_args(args);
+				continue;
+			}
+		}
+
+		execute_command(executable_path, args);
+		free(executable_path);
+		executable_path = NULL;
+
+		free(user_input);
+		free_args(args);
 	}
-	exit(EXIT_SUCCESS);
+	return (0);
 }
