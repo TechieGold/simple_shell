@@ -1,4 +1,4 @@
-#include "shell/h"
+#include "shell.h"
 
 /**
   * find_executable_path - Function to find the full path of the executable.
@@ -9,11 +9,12 @@
 char *find_executable_path(const char *command)
 {
 	char *path_env = getenv("PATH");
-	CHAT *path_copy = NULL;
+	char *path_copy = NULL;
 	char *full_path = NULL;
 	const char *delim = ":";
 	int access_result;
 	char *token;
+	ssize_t path_len, command_len;
 
 	if (path_env == NULL || command == NULL)
 		return (NULL);
