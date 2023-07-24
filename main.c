@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *user_input;
-	char command[MAX_CMD_LENGTH];
+	char command[MAX_COMMAND_LENGTH];
 	char *args[MAX_ARGS];
 	char *executable_path;
 
@@ -29,27 +29,42 @@ int main(void)
 			free(user_input);
 			break;
 		}
-		
-		if (strstr(command, '/') != NULL)
+		if (strchr(command, '/') != NULL)
+
 		{
 			executable_path = strdup(command);
 
 			if (executable_path == NULL)
 			{
 
-				printf("command not found: %s/n", command);
+				perror("Memory allocation failed");
 				free(user_input);
 				free_args(args);
 				continue;
 			}
 		}
 
+		else
+		{
+			executable_path = find_executable_path(command);
+
+			if (executable_path == NULL)
+			{
+				perror("lsh: command not found");
+				free(user_input);
+				free_args(args);
+				continue;
+			}
+		}
+		args[MAX_ARGS- 1] = NULL;
+
 		execute_command(executable_path, args);
-		free(executable_path);
 		executable_path = NULL;
 
 		free(user_input);
 		free_args(args);
+
 	}
 	return (0);
+
 }
