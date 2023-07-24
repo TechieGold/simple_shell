@@ -1,17 +1,28 @@
 #include "shell.h"
 
 /**
- * main - Entry point.
- *
- * Return: Always 0.
- */
-int main(int argc, char **argv)
+  * main - Entry point of the simple shell program.
+  *
+  * Return: Always returns EXIT_SUCCESS.
+  */
+int main(void)
 {
-	(void)argv; (void)argv;
+	char *command;
 
-	char *prompt = ">>";
-	
-	printf("%s\n", prompt);
-
-	return (0);
+	while (1)
+	{
+		display_prompt();
+		command = read_command_line();
+		if (command == NULL)
+		{
+			putchar('\n');
+			break;
+		}
+		if (strlen(command) > 0)
+		{
+			execute_command(command);
+		}
+		free(command);
+	}
+	exit(EXIT_SUCCESS);
 }
