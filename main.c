@@ -11,6 +11,8 @@ int main(void)
 	char command[MAX_COMMAND_LENGTH];
 	char *args[MAX_ARGS];
 	char *executable_path;
+	int exit_status = 0;
+	int handle_exit;
 
 	while (1)
 	{
@@ -21,15 +23,17 @@ int main(void)
 			_putchar('\n');
 			break;
 		}
+		
+		handle_exit = handle_exit_command(user_input, &exit_status);
+		if (handle_exit != 0)
+		{
+			free(user_input);
+			exit(exit_status);
+		}
 
 		parse_command(user_input, command, args);
 
-		if (strcmp(command, "exit") == 0)
-		{
-			free(user_input);
-			break;
-		}
-		else if (strcmp(command, "env") == 0)
+		if (strcmp(command, "env") == 0)
 		{
 			print_environment();
 
@@ -55,7 +59,7 @@ int main(void)
 
 			if (executable_path == NULL)
 			{
-				perror("lsh: command not found");
+				perror("lsh: ");
 				free(user_input);
 				free_args(args);
 				continue;
