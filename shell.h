@@ -12,7 +12,7 @@
 #include <sys/wait.h>
 
 int _putchar(char c);
-void display_prompt();
+void display_prompt(void);
 char *read_command();
 void parse_command(char *user_input, char *command, char *args[]);
 void execute_command(const char *command, char *const args[]);
