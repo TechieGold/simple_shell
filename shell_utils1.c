@@ -1,10 +1,11 @@
 #include "shell.h"
 
-/** display_prompt - Function to display the shell prompt.
-  *
-  * Return: Void.
-  */
-void display_prompt()
+/**
+* display_prompt - function to display the shell prompt
+*
+* Return: void
+*/
+void display_prompt(void)
 {
 	const char *prompt = "shell$ ";
 	size_t prompt_len = strlen(prompt);
@@ -14,7 +15,7 @@ void display_prompt()
 	{
 		_putchar(prompt[i]);
 	}
-	
+
 	fflush(stdout);
 }
 
