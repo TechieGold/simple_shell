@@ -23,8 +23,8 @@ int main(void)
 			_putchar('\n');
 			break;
 		}
-		
 		handle_exit = handle_exit_command(user_input, &exit_status);
+
 		if (handle_exit != 0)
 		{
 			free(user_input);
@@ -65,7 +65,7 @@ int main(void)
 				continue;
 			}
 		}
-		args[MAX_ARGS- 1] = NULL;
+		args[MAX_ARGS - 1] = NULL;
 
 		execute_command(executable_path, args);
 		executable_path = NULL;
