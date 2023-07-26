@@ -38,7 +38,7 @@ char *find_executable_path(const char *command)
 		if (!full_path)
 		{
 			perror("Memory allocation error");
-			exit (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		}
 
 		strcpy(full_path, token);
