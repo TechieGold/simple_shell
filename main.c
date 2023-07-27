@@ -1,79 +1,45 @@
 #include "shell.h"
 
 /**
-  * main - Entry point of the simple shell program.
-  *
-  * Return: Always returns EXIT_SUCCESS.
-  */
-int main(void)
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
+ *
+ * Return: 0 on success, 1 on error
+ */
+
+int main(int ac, char **av)
 {
-	char *user_input;
-	char command[MAX_COMMAND_LENGTH];
-	char *args[MAX_ARGS];
-	char *executable_path;
-	int exit_status = 0;
-	int handle_exit;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-	while (1)
+	asm ("mov %1, %0\n\t"
+		"add $3, %0"
+		: "=r" (fd)
+		: "r" (fd));
+	if (ac == 2)
 	{
-		user_input = read_command();
-
-		if (user_input == NULL)
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			_putchar('\n');
-			break;
-		}
-		handle_exit = handle_exit_command(user_input, &exit_status);
-
-		if (handle_exit != 0)
-		{
-			free(user_input);
-			exit(exit_status);
-		}
-
-		parse_command(user_input, command, args);
-
-		if (strcmp(command, "env") == 0)
-		{
-			print_environment();
-
-		}
-		else if (strchr(command, '/') != NULL)
-
-		{
-			executable_path = strdup(command);
-
-			if (executable_path == NULL)
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
 			{
-
-				perror("Memory allocation failed");
-				free(user_input);
-				free_args(args);
-				continue;
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
 			}
+			return (EXIT_FAILURE);
 		}
-
-		else
-		{
-			executable_path = find_executable_path(command);
-
-			if (executable_path == NULL)
-			{
-				perror("lsh: ");
-				free(user_input);
-				free_args(args);
-				continue;
-			}
-		}
-		args[MAX_ARGS - 1] = NULL;
-
-		execute_command(executable_path, args);
-		executable_path = NULL;
-
-		free(user_input);
-		free_args(args);
-
+		info->readfd = fd;
 	}
-	return (0);
-
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }
+
